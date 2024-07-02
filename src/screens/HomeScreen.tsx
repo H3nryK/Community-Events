@@ -1,19 +1,14 @@
 import React from 'react';
 import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
 
-export default function WelcomeScreen({navigation}) {
+export default function HomeScreen({navigation}) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Welcome</Text>
+      <Text style={styles.title}>Welcome Home!</Text>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.buttonText}>Login</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.navigate('Signup')}>
-        <Text style={styles.buttonText}>Sign Up</Text>
+        onPress={() => navigation.navigate('Welcome')}>
+        <Text style={styles.buttonText}>Logout</Text>
       </TouchableOpacity>
     </View>
   );
