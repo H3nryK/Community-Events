@@ -115,6 +115,11 @@ dependencies {
     }
 }
 
+project.ext.react = [
+  entryFile: "index.js",
+  enableHermes: true  // <--- enable hermes
+]
+
 project.ext.vectoricons = [
     iconFontNames: [ 'Ionicons.ttf' ]
 ]
