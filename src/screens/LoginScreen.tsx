@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
 import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
@@ -26,7 +27,10 @@ export default function LoginScreen({navigation}) {
     // Check if your device supports Google Play
     await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
     // Get the users ID token
-    const {idToken} = await GoogleSignin.signIn();
+    const {user} = await GoogleSignin.signIn();
+
+    console.log(user);
+    Alert.alert('Successful');
 
     // Create a Google credential with the token
     const googleCredential = auth.GoogleAuthProvider.credential(idToken);
