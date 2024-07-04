@@ -8,7 +8,7 @@ import {
   Dimensions,
   Alert,
 } from 'react-native';
-import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 const {width, height} = Dimensions.get('window');
 
@@ -16,32 +16,9 @@ export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  useEffect(() => {
-    GoogleSignin.configure({
-      webClientId:
-        '616465005506-7bnspms4tsmv9ccu6hcjt4hgq2d27kvg.apps.googleusercontent.com',
-    });
-  }, []);
-
-  async function onGoogleButtonPress() {
-    // Check if your device supports Google Play
-    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
-    // Get the users ID token
-    const {user} = await GoogleSignin.signIn();
-
-    console.log(user);
-    Alert.alert('Successful');
-
-    // Create a Google credential with the token
-    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-    // Sign-in the user with the credential
-    return auth().signInWithCredential(googleCredential);
-  }
-
   const handleLogin = () => {
-    // Implement login logic here
-    console.log('Login:', email, password);
+    auth().signInWithEmailAndPassword(email, password);
+    Alert.alert('Welcome back buddy');
     navigation.navigate('Home');
   };
 
@@ -54,21 +31,18 @@ export default function LoginScreen({navigation}) {
           placeholder="Email"
           placeholderTextColor="#a0a0a0"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={text => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#a0a0a0"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={text => setPassword(text)}
           secureTextEntry
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={onGoogleButtonPress}>
-          <Text style={styles.buttonText}>Contine with Google</Text>
         </TouchableOpacity>
       </View>
     </View>

@@ -1,11 +1,39 @@
-import React from 'react';
-import {View, Text, StyleSheet, TouchableOpacity, Image} from 'react-native';
+import React, {useEffect} from 'react';
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  Alert,
+} from 'react-native';
 import Logo from '../assets/logo.png';
-import {Dimensions} from 'react-native';
-
-const {width, height} = Dimensions.get('window');
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
+import auth from '@react-native-firebase/auth';
 
 export default function WelcomeScreen({navigation}) {
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '616465005506-7bnspms4tsmv9ccu6hcjt4hgq2d27kvg.apps.googleusercontent.com',
+    });
+  }, []);
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    console.log(idToken);
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
+
   return (
     <>
       <View style={styles.logoContainer}>
@@ -17,6 +45,11 @@ export default function WelcomeScreen({navigation}) {
           style={styles.loginButton}
           onPress={() => navigation.navigate('Login')}>
           <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={onGoogleButtonPress}>
+          <Text style={styles.loginButtonText}>Continue with Google</Text>
         </TouchableOpacity>
         <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
           <Text style={styles.signupText}>
