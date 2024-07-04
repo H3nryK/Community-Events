@@ -16,6 +16,7 @@ export default function SignupScreen({navigation}) {
   const signUpTestFn = () => {
     auth().createUserWithEmailAndPassword(email, password);
     Alert.alert('We are happy you joined us');
+    navigation.navigate('Home');
   };
 
   const [email, setEmail] = useState('');
@@ -151,4 +152,3 @@ const styles = StyleSheet.create({
 function then(arg0: () => void) {
   throw new Error('Function not implemented.');
 }
-
