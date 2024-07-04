@@ -6,19 +6,21 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  Alert,
 } from 'react-native';
+import auth from '@react-native-firebase/auth';
 
 const {width, height} = Dimensions.get('window');
 
 export default function SignupScreen({navigation}) {
+  const signUpTestFn = () => {
+    auth().createUserWithEmailAndPassword(email, password);
+    Alert.alert('We are happy you joined us');
+  };
+
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleSignup = () => {
-    // Implement signup logic here
-    console.log('Signup:', email, password);
-    navigation.navigate('Home');
-  };
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   return (
     <View style={styles.container}>
@@ -29,17 +31,25 @@ export default function SignupScreen({navigation}) {
           placeholder="Email"
           placeholderTextColor="#a0a0a0"
           value={email}
-          onChangeText={setEmail}
+          onChangeText={text => setEmail(text)}
         />
         <TextInput
           style={styles.input}
           placeholder="Password"
           placeholderTextColor="#a0a0a0"
           value={password}
-          onChangeText={setPassword}
+          onChangeText={text => setPassword(text)}
           secureTextEntry
         />
-        <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          placeholderTextColor="#a0a0a0"
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+          secureTextEntry
+        />
+        <TouchableOpacity style={styles.button} onPress={signUpTestFn}>
           <Text style={styles.buttonText}>Sign Up</Text>
         </TouchableOpacity>
       </View>
@@ -138,3 +148,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   },
 });
+function then(arg0: () => void) {
+  throw new Error('Function not implemented.');
+}
+
