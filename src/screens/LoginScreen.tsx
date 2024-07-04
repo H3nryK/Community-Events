@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   View,
   Text,
@@ -7,12 +7,33 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
+import {GoogleSignin} from '@react-native-google-signin/google-signin';
 
 const {width, height} = Dimensions.get('window');
 
 export default function LoginScreen({navigation}) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  useEffect(() => {
+    GoogleSignin.configure({
+      webClientId:
+        '616465005506-7bnspms4tsmv9ccu6hcjt4hgq2d27kvg.apps.googleusercontent.com',
+    });
+  }, []);
+
+  async function onGoogleButtonPress() {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({showPlayServicesUpdateDialog: true});
+    // Get the users ID token
+    const {idToken} = await GoogleSignin.signIn();
+
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+    // Sign-in the user with the credential
+    return auth().signInWithCredential(googleCredential);
+  }
 
   const handleLogin = () => {
     // Implement login logic here
@@ -41,6 +62,9 @@ export default function LoginScreen({navigation}) {
         />
         <TouchableOpacity style={styles.button} onPress={handleLogin}>
           <Text style={styles.buttonText}>Login</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={onGoogleButtonPress}>
+          <Text style={styles.buttonText}>Contine with Google</Text>
         </TouchableOpacity>
       </View>
     </View>
